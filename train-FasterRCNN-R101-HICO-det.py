@@ -3,12 +3,13 @@
 # register_coco_instances("my_dataset_train", {}, "json_annotation_train.json", "path/to/image/dir")
 # register_coco_instances("my_dataset_val", {}, "json_annotation_val.json", "path/to/image/dir")
 
+import torch
 import pickle
 import os, json, cv2, random
 from tqdm import tqdm
 
 from detectron2 import model_zoo
-from detectron2.engine import DefaultPredictor
+from detectron2.engine import DefaultPredictor, DefaultTrainer
 from detectron2.config import get_cfg
 from detectron2.utils.visualizer import Visualizer
 from detectron2.data import MetadataCatalog, DatasetCatalog
@@ -29,7 +30,7 @@ in each record (dtype = dict):
             category_id
 '''
 
-DATA_DIR    = "/disk1/zhanke/TIN/Transferable-Interactiveness-Network/Data"
+DATA_DIR = "/disk1/zhanke/TIN/Transferable-Interactiveness-Network/Data"
 
 def Iou(boxA, boxB):
     boxA = [int(x) for x in boxA]
@@ -107,7 +108,6 @@ def getHicoTrainDataset():
     '''
     data = pickle.load(open('./data/db_trainval.pkl','rb'))
     dataset_dicts = []
-
     for img_id in tqdm(data.keys()):
         record = {}
 
@@ -126,8 +126,12 @@ def getHicoTrainDataset():
         objs = []
 
         for box, box_class in zip(img_data['boxes'], img_data['obj_classes']): 
-            if objs != [] and validateBox(box, [obj["bbox"] for obj in objs]) == False:
-                continue
+            # if box_class != 1:
+            #     box_class = 2
+
+            if objs != []:
+                if validateBox(box, [obj["bbox"] for obj in objs]) == False:
+                    continue
 
             obj =   {   "bbox": box,
                         "bbox_mode": BoxMode.XYXY_ABS,
@@ -140,16 +144,28 @@ def getHicoTrainDataset():
 
         # test Mode
         '''
-        if img_id == 20:
+        if img_id == 500:
             break
         '''
+
     return dataset_dicts
 
+# TODO
+def getHicoTestDataset():
+    pass
+
+# TODO
+def calculateMetrics():
+    pass
+ 
+     
 DatasetCatalog.register("HICO_train", getHicoTrainDataset)
 # MetadataCatalog.get("HICO_train").set(thing_classes=["balloon"])
 HICO_metadata = MetadataCatalog.get("HICO_train")
 
-# visualization of bboxes
+# visualization of bboxes 
+# ==> OK
+'''
 dataset_dicts = getHicoTrainDataset()
 for d in random.sample(dataset_dicts, 10):
     img = cv2.imread(d["file_name"])
@@ -158,12 +174,10 @@ for d in random.sample(dataset_dicts, 10):
 
     image = out.get_image()[:, :, ::-1]
     cv2.imwrite("./output/vis-train/vis_{}".format(d["file_name"].split('/')[-1]), image)
-
+'''
 
 # exit()
 # train
-from detectron2.engine import DefaultTrainer
-
 cfg = get_cfg()
 cfg.configFile = "COCO-Detection/faster_rcnn_R_101_FPN_3x.yaml"
 # "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"
@@ -171,16 +185,17 @@ cfg.configFile = "COCO-Detection/faster_rcnn_R_101_FPN_3x.yaml"
 cfg.merge_from_file(model_zoo.get_config_file(cfg.configFile))
 cfg.DATASETS.TRAIN = ("HICO_train",)
 cfg.DATASETS.TEST = ()
-cfg.DATALOADER.NUM_WORKERS = 2
+cfg.DATALOADER.NUM_WORKERS = 8
 cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(cfg.configFile)  # Let training initialize from model zoo
-cfg.SOLVER.IMS_PER_BATCH = 2
+cfg.SOLVER.IMS_PER_BATCH = 4
 cfg.SOLVER.BASE_LR = 0.00025  # pick a good LR
-cfg.SOLVER.MAX_ITER = 300    # 300 iterations seems good enough for this toy dataset; you may need to train longer for a practical dataset
+cfg.SOLVER.MAX_ITER = 50000    # 300 iterations seems good enough for this toy dataset; you may need to train longer for a practical dataset
 cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 128   # faster, and good enough for this toy dataset (default: 512)
-cfg.MODEL.ROI_HEADS.NUM_CLASSES = 1  # only has one class (ballon)
+cfg.MODEL.ROI_HEADS.NUM_CLASSES = 80  # only has two classes: Person::1 Object:2
 cfg.OUTPUT_DIR = "./output/"
-
 os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
+
 trainer = DefaultTrainer(cfg) 
 trainer.resume_or_load(resume=False)
 trainer.train()
+torch.save(trainer.model, './weight/faster_rcnn_R_101_FPN_3x_iter_{}_checkpoint.pth'.format(cfg.SOLVER.MAX_ITER))
