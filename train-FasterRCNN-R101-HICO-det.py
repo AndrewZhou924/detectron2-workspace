@@ -125,9 +125,9 @@ def getHicoTrainDataset():
         record["width"]     = width
         objs = []
 
-        for box, box_class in zip(img_data['boxes'], img_data['obj_classes']): 
-            # if box_class != 1:
-            #     box_class = 2
+        for box, box_class, is_gt in zip(img_data['boxes'], img_data['obj_classes'], img_data['is_gt']): 
+            if not is_gt:
+                continue
 
             if objs != []:
                 if validateBox(box, [obj["bbox"] for obj in objs]) == False:
@@ -157,8 +157,8 @@ def getHicoTestDataset():
 # TODO
 def calculateMetrics():
     pass
- 
-     
+
+
 DatasetCatalog.register("HICO_train", getHicoTrainDataset)
 # MetadataCatalog.get("HICO_train").set(thing_classes=["balloon"])
 HICO_metadata = MetadataCatalog.get("HICO_train")

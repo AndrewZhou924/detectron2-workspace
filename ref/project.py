@@ -1,86 +1,45 @@
 import torch, torchvision
+# import some common libraries
 import os
 import shutil
-print(torch.__version__, torch.cuda.is_available())
-
-import detectron2
-from detectron2.utils.logger import setup_logger
-setup_logger()
-
-
-
-output_dir= "./output/"
-if os.path.exists(output_dir):
-	shutil.rmtree(output_dir)
-
-
-
-
-# import some common libraries
 import numpy as np
 import cv2
 import random
-# from google.colab.patches import cv2_imshow
+import numpy as np
+import json
+import random
 
 # import some common detectron2 utilities
+import detectron2
+from detectron2.utils.logger import setup_logger
 from detectron2 import model_zoo
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
 from detectron2.utils.visualizer import Visualizer
 from detectron2.data import MetadataCatalog,DatasetCatalog
-
-
-#We can use `Visualizer` to draw the predictions on the image.
-#---------------------------------
-#This is a test before training.
-#---------------------------------
-# im = cv2.imread("Pics/EMT/873ec2bd70a3c514860dca8c15faab22.jpg")
-# cv2_imshow(im)
-
-
-# cfg = get_cfg()
-# # add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
-# cfg.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_FPN_1x.yaml"))
-# cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # set threshold for this model
-# # Find a model from detectron2's model zoo. You can use the https://dl.fbaipublicfiles... url as well
-# cfg.MODEL.WEIGHTS = "Coco/configs/COCO-Detection/faster_rcnn_R_50_FPN_1x/137257794/model_final_b275ba.pkl"
-# predictor = DefaultPredictor(cfg)
-# outputs = predictor(im)
-
-# print(outputs["instances"].pred_classes)
-# print(outputs["instances"].pred_boxes)
-
-# v = Visualizer(im[:, :, ::-1], MetadataCatalog.get(cfg.DATASETS.TRAIN[0]), scale=1.2)
-# out = v.draw_instance_predictions(outputs["instances"].to("cpu"))
-# cv2_imshow(out.get_image()[:, :, ::-1])
-
-
-
-# if your dataset is in COCO format, this cell can be replaced by the following three lines:
-# from detectron2.data.datasets import register_coco_instances
-# register_coco_instances("my_dataset_train", {}, "json_annotation_train.json", "path/to/image/dir")
-# register_coco_instances("my_dataset_val", {}, "json_annotation_val.json", "path/to/image/dir")
-
-
-import numpy as np
-import json
 from detectron2.structures import BoxMode
 from detectron2.data import DatasetCatalog, MetadataCatalog
 from detectron2.data.datasets import register_coco_instances
 from detectron2.data.datasets import load_coco_json
-# print(detectron2.data.datasets.__file__)
-# print(os.getcwd())
+
+'''
+    code for main project
+'''
+
+setup_logger()
+
+output_dir= "./output/"
+if os.path.exists(output_dir):
+	shutil.rmtree(output_dir)
+
 register_coco_instances("coco_train_2", {}, "./Coco/detectron2/datasets/coco/annotations/instances_train.json", "./Coco/detectron2/datasets/coco/train")
 register_coco_instances("coco_val_2", {}, "./Coco/detectron2/datasets/coco/annotations/instances_val.json", "./Coco/detectron2/datasets/coco/val")
 
-
-
-
-# import random
-#from detectron2.data import DatasetCatalog, MetadataCatalog
+# from detectron2.data import DatasetCatalog, MetadataCatalog
 from detectron2.data.datasets import builtin,load_coco_json
 dataset_dicts = load_coco_json("./Coco/detectron2/datasets/coco/annotations/instances_train.json", "./Coco/detectron2/datasets/coco/train")
 # print(dataset_dicts)
+
 coco_train_metadata=MetadataCatalog.get("coco_train_2")
 for d in random.sample(dataset_dicts, 1):
     img = cv2.imread(d["file_name"])

@@ -46,7 +46,7 @@ cfg = get_cfg()
 
 cfg.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_FPN_1x.yaml"))
 cfg.DATASETS.TRAIN = ("coco_train_2",)
-cfg.DATASETS.TEST = ("coco_val_2", )
+cfg.DATASETS.TEST  = ("coco_val_2", )
 cfg.DATALOADER.NUM_WORKERS = 2
 
 
@@ -65,7 +65,7 @@ img_path = "./Coco/detectron2/datasets/coco/val/"
 files = os.listdir("./Coco/detectron2/datasets/coco/val")
 i = 1
 
-#load some pics from image_val to test
+# load some pics from image_val to test
 for file in files:
     if i > 10:
         break
