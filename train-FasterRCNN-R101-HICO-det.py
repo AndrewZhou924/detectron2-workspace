@@ -196,6 +196,15 @@ cfg.OUTPUT_DIR = "./output/"
 os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
 
 trainer = DefaultTrainer(cfg) 
-trainer.resume_or_load(resume=False)
-trainer.train()
-torch.save(trainer.model, './weight/faster_rcnn_R_101_FPN_3x_iter_{}_checkpoint.pth'.format(cfg.SOLVER.MAX_ITER))
+cfg.MODEL.WEIGHTS  = "./data/HICO-DET-Detector/model_0064999.pth" # VCL model map = 30.79% "./output/model_final.pth"
+cfg.DATASETS.TEST  = ("HICO_train")
+
+trainer     = DefaultTrainer(cfg) 
+evaluator   = COCOEvaluator("HICO_train", cfg, True, output_dir="./output")
+test_loader = build_detection_test_loader(cfg, "HICO_train")
+print(inference_on_dataset(trainer.model, test_loader, evaluator))
+
+
+# trainer.resume_or_load(resume=False)
+# trainer.train()
+# torch.save(trainer.model, './weight/faster_rcnn_R_101_FPN_3x_iter_{}_checkpoint.pth'.format(cfg.SOLVER.MAX_ITER))
