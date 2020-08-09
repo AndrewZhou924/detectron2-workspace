@@ -16,7 +16,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Evaluation for detector on HICO-Det testset')
     parser.add_argument('--result', dest='result', 
             help='detection result on hico test',
-            default='./data/db_trainval.pkl', type=str)
+            default="./data/HICO-DET-Detector/Test_HICO_res101_3x_FPN_hico.pkl", type=str)
     
     args = parser.parse_args()
     return args
@@ -32,38 +32,39 @@ if __name__ == "__main__":
 
     # loading data
     hicoGroundTruth  = "./data/HICO-DET-Detector/hico_annotations_test2015.json"
+    # hicoGroundTruth  = "./data/HICO-DET-Detector/hico_annotations_train2015.json"
     cocoGt           = COCO(hicoGroundTruth) #取得标注集中coco json对象
     ImgIds           = cocoGt.getImgIds()
 
+    # '''
     # preparing Det data
     pklData     = pickle.load(open(args.result, 'rb'))
     annotations = []
     cat_list    = []
     for key in tqdm(ImgIds):
-        imgData = pklData[key]
 
-        for i in range(len(imgData['obj_classes'])):
-            
-            # if imgData['is_gt'][i]: # skip gt bbox
-            #     continue
+        try:
+            imgData = pklData[key]
+        except:
+            print("Img id={} not found".format(key))
 
-            [x1,y1,x2,y2] = imgData['boxes'][i]
+        for idx, info in enumerate(imgData):
+            [x1,y1,x2,y2] = info[2]
             x1            = min(x1,x2)
             x2            = max(x1,x2)
             y1            = min(y1,y2)
             y2            = max(y1,y2)
             width         = abs(x2 - x1)
             height        = abs(y2 - y1)
-            category_id   = imgData['obj_classes'][i]
-            category_id   = category_set[category_id-1]
-            score         = imgData['obj_scores'][i]
+            category_id   = info[4]
+            score         = info[5]
 
             anno = {
                 "image_id": key, 
                 "category_id": category_id,
                 'area': width * height,
-                # 'bbox': [x1, y1, width, height],
-                'bbox': imgData['boxes'][i],
+                'bbox': [x1, y1, width, height],
+                # 'bbox': imgData['boxes'][i],
                 "iscrowd": 0, 
                 "id": 0, 
                 "score": score,
@@ -72,6 +73,7 @@ if __name__ == "__main__":
             
             # print(anno)
             # cat_list.append(category_id)
+    
 
     # print(set(cat_list))
     # exit()
@@ -87,6 +89,7 @@ if __name__ == "__main__":
     cocoDt.dataset['categories']  = copy.deepcopy(cocoGt.dataset['categories'])
     cocoDt.dataset['annotations'] = annotations
     cocoDt.createIndex()
+    # '''
 
     # process annotations_GT
     # change box format from XYXY to XYWH (and adding area)
