@@ -16,7 +16,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Evaluation for detector on HICO-Det testset')
     parser.add_argument('--result', dest='result', 
             help='detection result on hico test',
-            default='./result-on-hico-test.pkl', type=str)
+            default='./data/db_trainval.pkl', type=str)
     
     args = parser.parse_args()
     return args
@@ -44,8 +44,8 @@ if __name__ == "__main__":
 
         for i in range(len(imgData['obj_classes'])):
             
-            if imgData['is_gt'][i]: # skip gt bbox
-                continue
+            # if imgData['is_gt'][i]: # skip gt bbox
+            #     continue
 
             [x1,y1,x2,y2] = imgData['boxes'][i]
             x1            = min(x1,x2)
@@ -63,7 +63,7 @@ if __name__ == "__main__":
                 "category_id": category_id,
                 'area': width * height,
                 # 'bbox': [x1, y1, width, height],
-                # 'bbox': imgData['boxes'][i],
+                'bbox': imgData['boxes'][i],
                 "iscrowd": 0, 
                 "id": 0, 
                 "score": score,
@@ -78,7 +78,10 @@ if __name__ == "__main__":
 
     for idx, ann in enumerate(annotations):
         ann['id'] = idx + 1
-    
+
+    annsImgIds = [ann['image_id'] for ann in annotations]
+    assert set(annsImgIds) == (set(annsImgIds) & set(cocoGt.getImgIds()))
+
     cocoDt = COCO()
     cocoDt.dataset['images']      = [img for img in cocoGt.dataset['images']]
     cocoDt.dataset['categories']  = copy.deepcopy(cocoGt.dataset['categories'])
