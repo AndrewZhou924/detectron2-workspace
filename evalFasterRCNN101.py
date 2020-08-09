@@ -11,8 +11,9 @@ cfg = get_cfg()
 cfg.configFile     = "COCO-Detection/faster_rcnn_R_101_FPN_3x.yaml"
 cfg.MODEL.ROI_HEADS.NUM_CLASSES = 80
 cfg.MODEL.WEIGHTS  = "./data/HICO-DET-Detector/model_0064999.pth" # VCL model map = 30.79% "./output/model_final.pth"
-cfg.DATASETS.TRAIN = ("HICO-det-train")
-cfg.DATASETS.TEST  = ("HICO-det-test")
+# cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(cfg.configFile)
+cfg.DATASETS.TRAIN = ("HICO-det-train",)
+cfg.DATASETS.TEST  = ("HICO-det-test",)
 
 trainer     = DefaultTrainer(cfg) 
 evaluator   = COCOEvaluator("HICO-det-test", cfg, True, output_dir="./output")

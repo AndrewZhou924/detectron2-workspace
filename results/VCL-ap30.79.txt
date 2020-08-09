@@ -1,0 +1,52 @@
+COCOeval_opt.accumulate() finished in 1.48 seconds.
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.308
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=100 ] = 0.509
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=100 ] = 0.317
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.308
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.401
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.484
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = 0.487
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=100 ] = 0.487
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=100 ] = -1.000
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=100 ] = -1.000
+[08/09 13:17:35 d2.evaluation.coco_evaluation]: Evaluation results for bbox: 
+|   AP   |  AP50  |  AP75  |  APs   |  APm  |  APl  |
+|:------:|:------:|:------:|:------:|:-----:|:-----:|
+| 30.794 | 50.886 | 31.702 | 30.794 |  nan  |  nan  |
+[08/09 13:17:35 d2.evaluation.coco_evaluation]: Some metrics cannot be computed and is shown as NaN.
+[08/09 13:17:35 d2.evaluation.coco_evaluation]: Per-category bbox AP: 
+| category      | AP     | category     | AP     | category       | AP     |
+|:--------------|:-------|:-------------|:-------|:---------------|:-------|
+| person        | 49.118 | bicycle      | 47.553 | car            | 49.895 |
+| motorcycle    | 59.808 | airplane     | 63.866 | bus            | 71.938 |
+| train         | 51.844 | truck        | 46.986 | boat           | 39.739 |
+| traffic light | 8.055  | fire hydrant | 62.671 | stop sign      | 22.424 |
+| parking meter | 34.495 | bench        | 37.389 | bird           | 16.329 |
+| cat           | 43.799 | dog          | 40.925 | horse          | 60.778 |
+| sheep         | 29.732 | cow          | 29.361 | elephant       | 58.843 |
+| bear          | 25.561 | zebra        | 55.831 | giraffe        | 62.267 |
+| backpack      | 25.275 | umbrella     | 40.151 | handbag        | 8.682  |
+| tie           | 21.430 | suitcase     | 24.058 | frisbee        | 38.079 |
+| skis          | 20.362 | snowboard    | 42.786 | sports ball    | 35.250 |
+| kite          | 26.196 | baseball bat | 32.374 | baseball glove | 29.745 |
+| skateboard    | 44.978 | surfboard    | 33.091 | tennis racket  | 34.634 |
+| bottle        | 19.442 | wine glass   | 33.750 | cup            | 26.725 |
+| fork          | 11.968 | knife        | 17.217 | spoon          | 19.181 |
+| bowl          | 9.832  | banana       | 25.523 | apple          | 26.763 |
+| sandwich      | 25.691 | orange       | 18.108 | broccoli       | 22.921 |
+| carrot        | 12.607 | hot dog      | 12.540 | pizza          | 38.982 |
+| donut         | 28.249 | cake         | 40.148 | chair          | 14.274 |
+| couch         | 36.828 | potted plant | 11.081 | bed            | 41.501 |
+| dining table  | 49.443 | toilet       | 41.167 | tv             | 20.992 |
+| laptop        | 42.758 | mouse        | 10.036 | remote         | 16.761 |
+| keyboard      | 32.721 | cell phone   | 15.122 | microwave      | 18.384 |
+| oven          | 9.618  | toaster      | 16.554 | sink           | 8.357  |
+| refrigerator  | 18.279 | book         | 29.692 | clock          | 21.991 |
+| vase          | 8.262  | scissors     | 12.184 | teddy bear     | 42.392 |
+| hair drier    | 8.351  | toothbrush   | 20.784 |                |        |
+[08/09 13:17:37 d2.engine.defaults]: Evaluation results for HICO-det-test in csv format:
+[08/09 13:17:37 d2.evaluation.testing]: copypaste: Task: bbox
+[08/09 13:17:37 d2.evaluation.testing]: copypaste: AP,AP50,AP75,APs,APm,APl
+[08/09 13:17:37 d2.evaluation.testing]: copypaste: 30.7935,50.8860,31.7021,30.7935,nan,nan

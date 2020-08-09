@@ -4,8 +4,8 @@ from detectron2.evaluation import COCOEvaluator, inference_on_dataset
 from detectron2.data import build_detection_test_loader
 from detectron2.data.datasets import register_coco_instances
 
-# register_coco_instances("HICO-det-train", {}, "./data/HICO-DET-Detector/hico_annotations_train2015.json", "/disk1/zhanke/TIN/Transferable-Interactiveness-Network/Data/hico_20160224_det/images/train2015")
-# register_coco_instances("HICO-det-test",  {}, "./data/HICO-DET-Detector/hico_annotations_test2015.json",  "/disk1/zhanke/TIN/Transferable-Interactiveness-Network/Data/hico_20160224_det/images/test2015")
+register_coco_instances("HICO-det-train", {}, "./data/HICO-DET-Detector/hico_annotations_train2015.json", "/disk1/zhanke/TIN/Transferable-Interactiveness-Network/Data/hico_20160224_det/images/train2015")
+register_coco_instances"HICO-det-test",  {}, "./data/HICO-DET-Detector/hico_annotations_test2015.json",  "/disk1/zhanke/TIN/Transferable-Interactiveness-Network/Data/hico_20160224_det/images/test2015")
 
 
 
