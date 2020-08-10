@@ -109,6 +109,11 @@ if __name__ == "__main__":
 
     # start evaluation
     cocoEval = COCOeval(cocoGt, cocoDt, 'bbox') 
+
+    # select N imgs to evaluate
+    # imgIds_sort  = sorted(ImgIds)
+    # cocoEval.params.imgIds = imgIds_sort[:500]
+
     cocoEval.evaluate()    #评价
     cocoEval.accumulate()  #积累
     cocoEval.summarize()   #总结

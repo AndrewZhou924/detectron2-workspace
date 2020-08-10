@@ -50,8 +50,8 @@ if __name__ == "__main__":
 
         for i in range(len(imgData['obj_classes'])):
             
-            # if imgData['is_gt'][i]: # skip gt bbox
-            #     continue
+            if not imgData['is_gt'][i]: # skip gt bbox
+                continue
 
             [x1,y1,x2,y2] = imgData['boxes'][i]
             x1            = min(x1,x2)
@@ -126,7 +126,12 @@ if __name__ == "__main__":
     '''
 
     # start evaluation
-    cocoEval = COCOeval(cocoGt, cocoDt, 'bbox') 
+    cocoEval     = COCOeval(cocoGt, cocoDt, 'bbox') 
+
+    # select N imgs to evaluate
+    imgIds_sort  = sorted(ImgIds)
+    cocoEval.params.imgIds = imgIds_sort[:500]
+
     cocoEval.evaluate()    #评价
     cocoEval.accumulate()  #积累
     cocoEval.summarize()   #总结
