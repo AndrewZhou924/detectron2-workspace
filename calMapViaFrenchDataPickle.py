@@ -25,10 +25,10 @@ if __name__ == "__main__":
     # arg parsing
     args = parse_args()
     print("==> result file: ", args.result)
-    category_set = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, \
+    category_set = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, \
         16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 27, 28, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, \
         46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 67, 70, 72, 73, 74, 75, \
-        76, 77, 78, 79, 80, 81, 82, 84, 85, 86, 87, 88, 89, 90)
+        76, 77, 78, 79, 80, 81, 82, 84, 85, 86, 87, 88, 89, 90]
 
     # loading data
     hicoGroundTruth  = "./data/HICO-DET-Detector/hico_annotations_test2015.json"
@@ -41,16 +41,19 @@ if __name__ == "__main__":
     pklData     = pickle.load(open(args.result, 'rb'))
     annotations = []
     cat_list    = []
-    for key in tqdm(ImgIds):
+    for key,imgData in tqdm(pklData.items()):
 
-        try:
-            imgData = pklData[key]
-        except:
-            print("Img id={} not found".format(key)) # 9658 - 9767 not found
-
+        # try:
+        #     imgData = pklData[key]
+        # except:
+        #     print("Img id={} not found".format(key)) # 9658 - 9767 not found
+        
+        img_id = int(imgData['filename'].strip('.jpg').split('_')[-1])
+        # print(img_id)
+        
         for i in range(len(imgData['obj_classes'])):
             
-            if not imgData['is_gt'][i]: # skip gt bbox
+            if imgData['is_gt'][i]: # skip gt bbox
                 continue
 
             [x1,y1,x2,y2] = imgData['boxes'][i]
@@ -60,16 +63,15 @@ if __name__ == "__main__":
             y2            = max(y1,y2)
             width         = abs(x2 - x1)
             height        = abs(y2 - y1)
-            category_id   = imgData['obj_classes'][i]
-            category_id   = category_set[category_id-1]
+            category      = imgData['obj_classes'][i]
+            category_id   = category_set[category-1]
             score         = imgData['obj_scores'][i]
 
             anno = {
-                "image_id": key, 
+                "image_id": img_id, 
                 "category_id": category_id,
                 'area': width * height,
                 'bbox': [x1, y1, width, height],
-                # 'bbox': imgData['boxes'][i],
                 "iscrowd": 0, 
                 "id": 0, 
                 "score": score,
@@ -77,10 +79,9 @@ if __name__ == "__main__":
             annotations.append(anno)
             
             # print(anno)
-            # cat_list.append(category_id)
+            cat_list.append(category_id)
     
-
-    # print(set(cat_list))
+    # print("len={}\n".format(len(set(cat_list))), set(cat_list))
     # exit()
 
     for idx, ann in enumerate(annotations):
@@ -129,8 +130,8 @@ if __name__ == "__main__":
     cocoEval     = COCOeval(cocoGt, cocoDt, 'bbox') 
 
     # select N imgs to evaluate
-    imgIds_sort  = sorted(ImgIds)
-    cocoEval.params.imgIds = imgIds_sort[:500]
+    # imgIds_sort  = sorted(ImgIds)
+    # cocoEval.params.imgIds = imgIds_sort[:500]
 
     cocoEval.evaluate()    #评价
     cocoEval.accumulate()  #积累

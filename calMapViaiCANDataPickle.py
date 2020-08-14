@@ -16,7 +16,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Evaluation for detector on HICO-Det testset')
     parser.add_argument('--result', dest='result', 
             help='detection result on hico test',
-            default="./data/HICO-DET-Detector/Test_HICO_res101_3x_FPN_hico.pkl", type=str)
+            default="/disk1/zhanke/TIN/Transferable-Interactiveness-Network/Data/Test_Faster_RCNN_R-50-PFN_2x_HICO_DET_with_pose.pkl", type=str)
     
     args = parser.parse_args()
     return args
@@ -37,15 +37,11 @@ if __name__ == "__main__":
 
     # '''
     # preparing Det data
-    pklData     = pickle.load(open(args.result, 'rb'))
+    pklData     = pickle.load(open(args.result, 'rb'), encoding="bytes")
     annotations = []
     cat_list    = []
-    for key in tqdm(ImgIds):
-
-        try:
-            imgData = pklData[key]
-        except:
-            print("Img id={} not found".format(key))
+    
+    for key, imgData in tqdm(pklData.items()):
 
         for idx, info in enumerate(imgData):
             [x1,y1,x2,y2] = info[2]
@@ -64,7 +60,6 @@ if __name__ == "__main__":
                 "category_id": category_id,
                 'area': width * height,
                 'bbox': [x1, y1, width, height],
-                # 'bbox': imgData['boxes'][i],
                 "iscrowd": 0, 
                 "id": 0, 
                 "score": score,
@@ -111,8 +106,8 @@ if __name__ == "__main__":
     cocoEval = COCOeval(cocoGt, cocoDt, 'bbox') 
 
     # select N imgs to evaluate
-    # imgIds_sort  = sorted(ImgIds)
-    # cocoEval.params.imgIds = imgIds_sort[:500]
+    imgIds_sort  = sorted(ImgIds)
+    cocoEval.params.imgIds = imgIds_sort[:500]
 
     cocoEval.evaluate()    #评价
     cocoEval.accumulate()  #积累
