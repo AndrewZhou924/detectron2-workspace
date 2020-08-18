@@ -1,0 +1,30 @@
+Settings 1:
+No NIS, LIS, Human and Object confidence threshold = 0.0
+
+1. Using iCAN Box
+    mAP=0.17242016521874093, mrec=0.6283776283897964
+
+2. Using Peyre Box
+    mAP=0.11859079830401052, mrec=0.985067224669161 (contain GT)
+    mAP=0.1312991297464018,  mrec=0.664019068763142 (without GT)
+
+3. Using VCL Box
+    OOM
+
+
+Settings 2:
+No NIS, LIS, Human and Object confidence threshold = 0.3
+
+1. Using iCAN Box
+    mAP=0.17046747880447813, mrec=0.5378387168415547
+
+2. Using Peyre Box
+    All combinations:
+    mAP=0.13027004208094056, mrec=0.5752148513784895 (without GT)
+
+    Boxes of candidate pairs:
+    total    ap: 0.1707 rec: 0.5722       
+
+3. Using VCL Box
+    mAP=0.17351090212625284, mrec=0.5463689591322554
+    mAP=0.20396095835072478, mrec=0.5336621416920562 [BEST]
