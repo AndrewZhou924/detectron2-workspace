@@ -17,14 +17,28 @@ No NIS, LIS, Human and Object confidence threshold = 0.3
 
 1. Using iCAN Box
     mAP=0.17046747880447813, mrec=0.5378387168415547
+    total    ap: 0.1705, rec 0.5378
+    rare     ap: 0.1311, rec 0.5426
+    non-rare ap: 0.1822, rec 0.5364
+
 
 2. Using Peyre Box
     All combinations:
     mAP=0.13027004208094056, mrec=0.5752148513784895 (without GT)
+    total    ap: 0.1303, rec 0.5752
+    rare     ap: 0.0999, rec 0.5757
+    non-rare ap: 0.1394, rec 0.5751
+
 
     Boxes of candidate pairs:
-    total    ap: 0.1707 rec: 0.5722       
+    total    ap: 0.1707 rec: 0.5722      
+    TODO:  rare & non-rare
 
 3. Using VCL Box
-    mAP=0.17351090212625284, mrec=0.5463689591322554
+    mAP=0.17351090212625284, mrec=0.5463689591322554 [spatial = all 0]
+    
     mAP=0.20396095835072478, mrec=0.5336621416920562 [BEST]
+    total    ap: 0.2040, rec 0.5337
+    rare     ap: 0.1305, rec 0.5158
+    non-rare ap: 0.2259, rec 0.5390
+

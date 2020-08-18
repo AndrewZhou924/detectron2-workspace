@@ -108,7 +108,7 @@ if __name__ == "__main__":
     # select N imgs to evaluate
     imgIds_sort  = sorted(ImgIds)
     # cocoEval.params.imgIds = imgIds_sort[:500]
-    # cocoEval.params.catIds = [i+1 for i in range(80)]
+
     cocoEval.evaluate()    #评价
     cocoEval.accumulate()  #积累
     cocoEval.summarize()   #总结
