@@ -35,10 +35,19 @@ No NIS, LIS, Human and Object confidence threshold = 0.3
     TODO:  rare & non-rare
 
 3. Using VCL Box
+    [pkl file, BBox mAP = 28.5%]
     mAP=0.17351090212625284, mrec=0.5463689591322554 [spatial = all 0]
     
     mAP=0.20396095835072478, mrec=0.5336621416920562 [BEST]
     total    ap: 0.2040, rec 0.5337
     rare     ap: 0.1305, rec 0.5158
     non-rare ap: 0.2259, rec 0.5390
+
+    [Det results, BBox mAP = 30.79%]
+    mAP=0.22767935392032343, mrec=0.732536764677943
+    total    ap: 0.2277, rec 0.7325
+    rare     ap: 0.1494, rec 0.7056
+    non-rare ap: 0.2511, rec 0.7406
+
+
 
