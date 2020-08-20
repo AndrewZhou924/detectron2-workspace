@@ -42,6 +42,8 @@ pkl_data
 4: class id
 5: score
 '''
+
+'''
 data = dict()
 cat_list = []
 for key,ann in tqdm(cocoDt.anns.items()):
@@ -71,6 +73,35 @@ for key,ann in tqdm(cocoDt.anns.items()):
 cat_list = set(cat_list)
 print(len(cat_list))
 print(cat_list)
+'''
 
-f = open('./data/HICO-DET-Detector/Test_HICO_res101_3x_FPN_hico_Ap30.8.pkl', 'wb')
+data = dict()
+cat_list = []
+for key,ann in tqdm(cocoDt.anns.items()):
+    pkl_data = []
+    image_id    = ann['image_id']
+    category_id = category_set.index(ann['category_id']) + 1
+    # print(ann['category_id'], category_id)
+    cat_list.append(category_id)
+
+    pkl_data.append(image_id) # 0
+
+    if category_id == 1:
+        pkl_data.append('Human')  # 1
+    else:
+        pkl_data.append('Object') # 1
+
+    bbox_xywh = ann['bbox']
+    bbox_xyxy = [bbox_xywh[0], bbox_xywh[1], bbox_xywh[0]+bbox_xywh[2], bbox_xywh[1]+bbox_xywh[3]]
+    pkl_data.append(bbox_xyxy)      # 2
+    pkl_data.append(None)           # 3
+    pkl_data.append(category_id)    # 4
+    pkl_data.append(ann['score'])   # 5
+
+    if image_id in data.keys():
+        data[image_id].append(pkl_data)
+    else:
+        data[image_id] = [pkl_data]
+        
+f = open('./data/HICO-DET-Detector/Test_HICO_res101_3x_FPN_hico_Ap30.8_cleanFormat.pkl', 'wb')
 pickle.dump(data, f)
