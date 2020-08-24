@@ -35,20 +35,18 @@ No NIS, LIS, Human and Object confidence threshold = 0.3
     Boxes of candidate pairs:
     total    ap: 0.1707 rec: 0.5722      
 
-3. Using VCL Box
-    [pkl file, BBox mAP = 28.5%]
-    mAP=0.17351090212625284, mrec=0.5463689591322554 [spatial = all 0]
-    
-    mAP=0.20396095835072478, mrec=0.5336621416920562 [BEST]
-    total    ap: 0.2040, rec 0.5337
-    rare     ap: 0.1305, rec 0.5158
-    non-rare ap: 0.2259, rec 0.5390
+3. Using VCL Box   
+    [pkl file,    BBox mAP = 28.5%] 
+    mAP=0.20535782419230506, mrec=0.5467005593078492
+    total    ap: 0.2054, rec 0.5467
+    rare     ap: 0.1315, rec 0.5375
+    non-rare ap: 0.2274, rec 0.5494
 
     [Det results, BBox mAP = 30.79%]
-    mAP=0.22096509740400214, mrec=0.5791646817100474
-    total    ap: 0.2210, rec 0.5792
-    rare     ap: 0.1450, rec 0.5683
-    non-rare ap: 0.2437, rec 0.5824
+    mAP=0.2223619632455824, mrec=0.5922030993258405
+    total    ap: 0.2224, rec 0.5922
+    rare     ap: 0.1460, rec 0.5900
+    non-rare ap: 0.2452, rec 0.5929
 
 Settings 3:
 No NIS, LIS, Human threshold = 0.3, Object threshold = 0.1 
