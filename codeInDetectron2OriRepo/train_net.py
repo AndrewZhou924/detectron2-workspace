@@ -15,6 +15,8 @@ Therefore, we recommend you to use detectron2 as an library and take
 this file as an example of how to use the library.
 You may want to write your own script with your datasets and other customizations.
 """
+from PIL import ImageFile, Image
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 import logging
 import os
@@ -133,19 +135,15 @@ def setup(args):
 
     cfg.freeze()
     default_setup(cfg, args)
+
+    # print("[setup] cfg:\n", cfg)
+    # exit()
     return cfg
 
 
 def main(args):
 
     cfg = setup(args)
-    
-    # regist dataset
-    # register_coco_instances("HICO-det-train", {}, "/home/zhanke/workspace/detectron2/detectron2-workspace/data/HICO-DET-Detector/hico_annotations_train2015.json", "/disk1/zhanke/TIN/Transferable-Interactiveness-Network/Data/hico_20160224_det/images/train2015")
-    # register_coco_instances("HICO-det-test",  {}, "/home/zhanke/workspace/detectron2/detectron2-workspace/data/HICO-DET-Detector/hico_annotations_test2015.json",  "/disk1/zhanke/TIN/Transferable-Interactiveness-Network/Data/hico_20160224_det/images/test2015")
-    # cfg.DATASETS.TRAIN = ("HICO-det-train",)
-    # cfg.DATASETS.TEST  = ("HICO-det-test",)
-
     if args.eval_only:
         model = Trainer.build_model(cfg)
         DetectionCheckpointer(model, save_dir=cfg.OUTPUT_DIR).resume_or_load(
