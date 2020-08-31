@@ -48,6 +48,12 @@ No NIS, LIS, Human and Object confidence threshold = 0.3
     rare     ap: 0.1460, rec 0.5900
     non-rare ap: 0.2452, rec 0.5929
 
+4. Using DRG Box
+    total    ap: 0.2370, rec 0.7428
+    rare     ap: 0.1541, rec 0.7153
+    non-rare ap: 0.2617, rec 0.7511
+    mAP=0.23698662403886697, mrec=0.7428439872054774
+
 Settings 3:
 No NIS, LIS, Human threshold = 0.3, Object threshold = 0.1 
 
